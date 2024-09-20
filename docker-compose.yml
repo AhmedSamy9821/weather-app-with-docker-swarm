@@ -1,0 +1,46 @@
+version: "3"
+services:
+  auth:
+    restart: always
+    build: ./auth
+    depends_on:
+      - db
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    deploy:
+      replicas: 2
+  ui:
+    restart: always
+    build: ./UI
+    depends_on:
+      - auth
+      - weather
+    environment:
+      AUTH_HOST: ${AUTH_HOST}
+      AUTH_PORT: ${AUTH_PORT}
+      WEATHER_HOST: ${WEATHER_HOST}
+      WEATHER_PORT: ${WEATHER_PORT}
+    ports:
+      - "80:3000"
+    deploy:
+      replicas: 2
+  weather:
+    restart: always
+    build: ./weather
+    environment:
+      APIKEY: ${APIKEY}
+    deploy:
+      replicas: 2
+  db:
+    restart: always
+    image: mysql:8.0.25
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./db-data:/var/lib/mysql
+volumes:
+  db-data:
