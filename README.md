@@ -56,7 +56,7 @@ To deploy this project using Docker Swarm, follow these steps:
      ```
 
 8. **Write the `docker-compose.yml` File**:
-   - Define your services and configurations in a `docker-compose.yml` file within the repository directory.
+   - copy`docker-compose.yml` file in this repository and put it within the repository directory.
 
 9. **Deploy the Services**:
    - Deploy the stack using Docker Compose:
